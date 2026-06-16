@@ -6,10 +6,10 @@
     <title>PEARL | المنظومة الرقمية الفاخرة</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Tajawal for clean Arabic, Playfair Display for premium English accents -->
+    <!-- Google Fonts: Tajawal for clean Arabic, Playfair Display & Inter for premium English accents -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Tajawal:wght@200;300;400;500;700;800;900&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -18,6 +18,7 @@
                     fontFamily: {
                         sans: ['Tajawal', 'sans-serif'],
                         serif: ['Playfair Display', 'serif'],
+                        mono: ['Courier New', 'Courier', 'monospace']
                     },
                     colors: {
                         pearl: {
@@ -34,7 +35,14 @@
                         }
                     },
                     animation: {
-                        'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'pulse-slow': 'pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
                     }
                 }
             }
@@ -46,7 +54,24 @@
             background-color: #FDFBF7;
             color: #1C1B19;
             overflow-x: hidden;
+            transition: background-color 0.5s ease;
         }
+        
+        /* Language-specific typography overrides */
+        html[lang="ar"] {
+            font-family: 'Tajawal', sans-serif;
+        }
+        html[lang="en"] {
+            font-family: 'Inter', sans-serif;
+        }
+        html[lang="en"] .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        html[lang="ar"] .font-serif {
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+        }
+
         /* Pearl Iridescent Glows */
         .pearl-glow-1 {
             background: radial-gradient(circle, rgba(244,239,230,0.6) 0%, rgba(253,251,247,0) 70%);
@@ -59,7 +84,7 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased selection:bg-gold/20 selection:text-pearl-900 relative">
+<body class="antialiased selection:bg-gold/20 selection:text-pearl-900 relative min-h-screen flex flex-col justify-between">
 
     <!-- Background Iridescent Elements -->
     <div class="absolute top-0 right-1/4 w-[600px] h-[600px] pearl-glow-1 rounded-full pointer-events-none -z-10 animate-pulse-slow"></div>
@@ -76,53 +101,59 @@
             <a href="#" class="flex items-center space-x-3 space-x-reverse group">
                 <span class="font-serif text-2xl lg:text-3xl tracking-[0.2em] font-light text-pearl-800 transition-colors duration-300 group-hover:text-gold">PEARL</span>
                 <span class="h-5 w-[1px] bg-pearl-200"></span>
-                <span class="text-xs tracking-[0.15em] text-neutral-400 font-light uppercase hidden sm:inline">Ecosystem</span>
+                <span data-i18n="brand_sub" class="text-[10px] tracking-[0.15em] text-neutral-400 font-light uppercase hidden sm:inline">المنظومة الرقمية</span>
             </a>
 
             <!-- Desktop Navigation Links -->
             <nav class="hidden md:flex items-center space-x-10 space-x-reverse">
-                <a href="https://blog.ly.id.ly" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-neutral-600 hover:text-pearl-800 transition-colors duration-300">المدونة الإستراتيجية</a>
-                <a href="https://app.ly.id.ly" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-neutral-600 hover:text-pearl-800 transition-colors duration-300">التطبيق الخارق</a>
-                <a href="https://admin.ly.id.ly" target="_blank" rel="noopener noreferrer" class="text-sm font-medium text-neutral-600 hover:text-pearl-800 transition-colors duration-300">لوحة التحكم والنماذج</a>
+                <a href="https://blog.ly.id.ly" target="_blank" rel="noopener noreferrer" data-i18n="nav_blog" class="text-sm font-medium text-neutral-600 hover:text-pearl-800 transition-colors duration-300">المدونة الإستراتيجية</a>
+                <a href="https://app.ly.id.ly" target="_blank" rel="noopener noreferrer" data-i18n="nav_app" class="text-sm font-medium text-neutral-600 hover:text-pearl-800 transition-colors duration-300">التطبيق الخارق</a>
             </nav>
 
-            <!-- Premium CTA Button -->
-            <div class="flex items-center space-x-4 space-x-reverse">
-                <a href="https://app.ly.id.ly" target="_blank" rel="noopener noreferrer" class="relative inline-flex items-center justify-center px-6 py-2.5 text-xs font-semibold tracking-wider uppercase border border-pearl-800 text-pearl-800 hover:text-pearl-50 hover:bg-pearl-800 transition-all duration-500 ease-out overflow-hidden group">
-                    <span class="relative z-10">دخول المنصة</span>
+            <!-- Premium Controls & CTA -->
+            <div class="flex items-center space-x-6 space-x-reverse">
+                <!-- Language Toggle Switch -->
+                <button onclick="toggleLanguage()" class="flex items-center space-x-1 space-x-reverse text-xs font-semibold tracking-wider text-neutral-500 hover:text-pearl-900 transition-colors duration-300">
+                    <span id="lang-ar-label" class="border-b-2 border-gold text-pearl-900 pb-0.5">AR</span>
+                    <span class="text-neutral-300">|</span>
+                    <span id="lang-en-label" class="pb-0.5">EN</span>
+                </button>
+
+                <a href="https://app.ly.id.ly" target="_blank" rel="noopener noreferrer" data-i18n="cta_enter" class="relative inline-flex items-center justify-center px-6 py-2.5 text-xs font-semibold tracking-wider uppercase border border-pearl-800 text-pearl-800 hover:text-pearl-50 hover:bg-pearl-800 transition-all duration-500 ease-out overflow-hidden group">
+                    دخول المنصة
                 </a>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="relative pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
+    <section class="relative pt-20 pb-16 lg:pt-28 lg:pb-24 overflow-hidden">
         <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
             
             <!-- Subtle Badge -->
-            <div class="inline-flex items-center space-x-2 space-x-reverse px-4 py-1.5 border border-gold/30 rounded-full bg-gold/5 mb-8 animate-fade-in">
+            <div class="inline-flex items-center space-x-2 space-x-reverse px-4 py-1.5 border border-gold/30 rounded-full bg-gold/5 mb-8">
                 <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
-                <span class="text-[11px] font-semibold tracking-[0.15em] text-gold-dark uppercase">فلسفة التصميم الرقمي الفاخر</span>
+                <span data-i18n="badge" class="text-[11px] font-semibold tracking-[0.15em] text-gold-dark uppercase">فلسفة التصميم الرقمي الفاخر</span>
             </div>
 
             <!-- Majestic Headline -->
             <h1 class="text-4xl sm:text-5xl lg:text-7xl font-light text-pearl-900 tracking-tight leading-[1.15] mb-8 max-w-5xl mx-auto">
-                صياغة رقمية فاخرة <br class="hidden sm:inline">
-                <span class="font-serif italic text-gold">تليق بالنخبة</span> وتلهم المستقبل
+                <span data-i18n="hero_title_1">صياغة رقمية فاخرة</span> <br class="hidden sm:inline">
+                <span data-i18n="hero_title_2" class="font-serif italic text-gold">تليق بالنخبة</span> <span data-i18n="hero_title_3">وتلهم المستقبل</span>
             </h1>
 
             <!-- Elegant Subtitle -->
-            <p class="text-lg sm:text-xl text-neutral-500 font-light max-w-3xl mx-auto leading-relaxed mb-12">
-                هندسة واجهات رقمية مستوحاة من دقة الخياطة البريطانية الراقية في شارع <span class="font-serif">Savile Row</span> وبساطة اللؤلؤ الطبيعي الخالد. تجربة فريدة مصممة لتتجاوز التوقعات.
+            <p data-i18n="hero_desc" class="text-base sm:text-lg text-neutral-500 font-light max-w-3xl mx-auto leading-relaxed mb-12">
+                هندسة واجهات رقمية مستوحاة من دقة الخياطة البريطانية الراقية في شارع Savile Row وبساطة اللؤلؤ الطبيعي الخالد. تجربة فريدة مصممة لتتجاوز التوقعات.
             </p>
 
             <!-- Dual Action Buttons -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-24">
-                <a href="https://app.ly.id.ly" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-4 bg-pearl-800 text-pearl-50 hover:bg-gold-dark text-sm font-medium transition-all duration-300 shadow-xl shadow-pearl-900/5">
-                    ابدأ التجربة الفاخرة
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+                <a href="https://app.ly.id.ly" target="_blank" rel="noopener noreferrer" data-i18n="btn_launch_app" class="w-full sm:w-auto px-8 py-4 bg-pearl-800 text-pearl-50 hover:bg-gold-dark text-sm font-medium transition-all duration-300 shadow-xl shadow-pearl-900/5">
+                    تشغيل التطبيق الخارق
                 </a>
-                <a href="https://admin.ly.id.ly" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-4 border border-pearl-200 hover:border-pearl-800 text-pearl-800 text-sm font-medium transition-all duration-300 bg-pearl-50/50 backdrop-blur-sm">
-                    استكشاف لوحة التحكم
+                <a href="https://blog.ly.id.ly" target="_blank" rel="noopener noreferrer" data-i18n="btn_read_blog" class="w-full sm:w-auto px-8 py-4 border border-pearl-200 hover:border-pearl-800 text-pearl-800 text-sm font-medium transition-all duration-300 bg-pearl-50/50 backdrop-blur-sm">
+                    تصفح المدونة الإستراتيجية
                 </a>
             </div>
 
@@ -135,68 +166,52 @@
         </div>
     </section>
 
-    <!-- Core Ecosystem Section (The 3 Pillars) -->
-    <section class="py-20 lg:py-28 border-t border-pearl-100/60 bg-pearl-50/30">
+    <!-- Core Ecosystem Section (The 2 Master Pillars) -->
+    <section class="py-20 lg:py-24 border-t border-pearl-100/60 bg-pearl-50/30">
         <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
             
-            <div class="text-center md:text-right mb-16">
-                <p class="text-xs font-bold tracking-widest text-gold uppercase mb-3">ركائز المنظومة</p>
-                <h2 class="text-3xl font-light text-pearl-900">الوجهات الرقمية الثلاث لبيئة بيرل</h2>
+            <div class="text-center mb-16">
+                <p data-i18n="pillars_badge" class="text-xs font-bold tracking-widest text-gold uppercase mb-3">ركائز المنظومة</p>
+                <h2 data-i18n="pillars_title" class="text-3xl font-light text-pearl-900">البوابتان الثنائيتان لبيئة بيرل</h2>
             </div>
 
-            <!-- Grid Layout (3 Columns for generous whitespace) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
+            <!-- Grid Layout (2 Columns for generous whitespace and premium balance) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
                 
                 <!-- Card 1: Blog -->
-                <div class="group relative bg-pearl-50/80 border border-pearl-100 p-8 lg:p-10 hover:border-gold/50 transition-all duration-500 flex flex-col justify-between min-h-[340px] shadow-sm hover:shadow-xl hover:-translate-y-1">
+                <div class="group relative bg-pearl-50/80 border border-pearl-100 p-8 lg:p-12 hover:border-gold/50 transition-all duration-500 flex flex-col justify-between min-h-[360px] shadow-sm hover:shadow-xl hover:-translate-y-1">
                     <div>
-                        <div class="w-10 h-10 flex items-center justify-center border border-gold/20 mb-8 group-hover:bg-gold/5 transition-all duration-300">
-                            <span class="font-serif text-sm text-gold">01</span>
+                        <div class="w-12 h-12 flex items-center justify-center border border-gold/20 mb-8 group-hover:bg-gold/5 transition-all duration-300">
+                            <span data-i18n="card_1_num" class="font-serif text-base text-gold">٠١</span>
                         </div>
-                        <h3 class="text-xl font-medium text-pearl-800 mb-3">منصة المدونة</h3>
-                        <p class="text-xs text-neutral-400 font-mono tracking-widest uppercase mb-4">The Blog Platform</p>
-                        <p class="text-sm text-neutral-500 leading-relaxed font-light">مقالات وأفكار متقدمة حول التصميم الرقمي الفاخر وتطور تجربة المستخدم.</p>
+                        <h3 data-i18n="card_1_title" class="text-2xl font-medium text-pearl-800 mb-4">المدونة الإستراتيجية</h3>
+                        <p data-i18n="card_1_desc" class="text-sm text-neutral-500 leading-relaxed font-light">أبحاث ومقالات متقدمة حول فلسفة التصميم الفاخر وتطور هندسة تجارب المستخدم الاستثنائية.</p>
                     </div>
-                    <div class="pt-6">
+                    <div class="pt-8">
                         <a href="https://blog.ly.id.ly" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-xs font-semibold text-pearl-800 group-hover:text-gold transition-colors duration-300">
-                            زيارة المدونة
-                            <svg class="w-4 h-4 mr-2 transform rotate-180 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            <span data-i18n="card_1_btn">زيارة المدونة</span>
+                            <svg class="w-4 h-4 mx-2 transform rotate-180 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
                         </a>
                     </div>
                 </div>
 
                 <!-- Card 2: Super-App -->
-                <div class="group relative bg-pearl-50/80 border border-pearl-100 p-8 lg:p-10 hover:border-gold/50 transition-all duration-500 flex flex-col justify-between min-h-[340px] shadow-sm hover:shadow-xl hover:-translate-y-1">
+                <div class="group relative bg-pearl-50/80 border border-pearl-100 p-8 lg:p-12 hover:border-gold/50 transition-all duration-500 flex flex-col justify-between min-h-[360px] shadow-sm hover:shadow-xl hover:-translate-y-1">
                     <div>
-                        <div class="w-10 h-10 flex items-center justify-center border border-gold/20 mb-8 group-hover:bg-gold/5 transition-all duration-300">
-                            <span class="font-serif text-sm text-gold">02</span>
+                        <div class="w-12 h-12 flex items-center justify-center border border-gold/20 mb-8 group-hover:bg-gold/5 transition-all duration-300">
+                            <span data-i18n="card_2_num" class="font-serif text-base text-gold">٠٢</span>
                         </div>
-                        <h3 class="text-xl font-medium text-pearl-800 mb-3">التطبيق الخارق</h3>
-                        <p class="text-xs text-neutral-400 font-mono tracking-widest uppercase mb-4">The Super-App Interface</p>
-                        <p class="text-sm text-neutral-500 leading-relaxed font-light">بوابة متكاملة لإدارة الأصول الرقمية والتحليلات المتقدمة بواجهة مذهلة.</p>
+                        <h3 data-i18n="card_2_title" class="text-2xl font-medium text-pearl-800 mb-4">التطبيق الخارق الذكي</h3>
+                        <p data-i18n="card_2_desc" class="text-sm text-neutral-500 leading-relaxed font-light">بوابة موحدة لإدارة الأصول الرقمية والتحليلات المتقدمة والعمليات السيادية بواجهة فائقة الأداء.</p>
                     </div>
-                    <div class="pt-6">
+                    <div class="pt-8">
                         <a href="https://app.ly.id.ly" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-xs font-semibold text-pearl-800 group-hover:text-gold transition-colors duration-300">
-                            تشغيل التطبيق
-                            <svg class="w-4 h-4 mr-2 transform rotate-180 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Card 3: Demo Template -->
-                <div class="group relative bg-pearl-50/80 border border-pearl-100 p-8 lg:p-10 hover:border-gold/50 transition-all duration-500 flex flex-col justify-between min-h-[340px] shadow-sm hover:shadow-xl hover:-translate-y-1">
-                    <div>
-                        <div class="w-10 h-10 flex items-center justify-center border border-gold/20 mb-8 group-hover:bg-gold/5 transition-all duration-300">
-                            <span class="font-serif text-sm text-gold">03</span>
-                        </div>
-                        <h3 class="text-xl font-medium text-pearl-800 mb-3">معرض لوحة التحكم</h3>
-                        <p class="text-xs text-neutral-400 font-mono tracking-widest uppercase mb-4">The Admin Showcase</p>
-                        <p class="text-sm text-neutral-500 leading-relaxed font-light">استعرض الهياكل التصميمية والأنماط التفاعلية المطورة خصيصاً لشركائنا.</p>
-                    </div>
-                    <div class="pt-6">
-                        <a href="https://admin.ly.id.ly" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-xs font-semibold text-pearl-800 group-hover:text-gold transition-colors duration-300">
-                            تصفح المعرض
-                            <svg class="w-4 h-4 mr-2 transform rotate-180 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            <span data-i18n="card_2_btn">تشغيل التطبيق</span>
+                            <svg class="w-4 h-4 mx-2 transform rotate-180 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
                         </a>
                     </div>
                 </div>
@@ -215,30 +230,30 @@
                 
                 <!-- Text Content -->
                 <div class="lg:col-span-7">
-                    <span class="text-xs font-bold tracking-widest text-gold uppercase block mb-4">فلسفة التفصيل الرقمي</span>
+                    <span data-i18n="phil_badge" class="text-xs font-bold tracking-widest text-gold uppercase block mb-4">فلسفة التفصيل الرقمي</span>
                     <h2 class="text-3xl sm:text-4xl font-light leading-tight mb-6">
-                        نصمم الأنظمة الرقمية كما تُصنع <br>
-                        <span class="font-serif italic text-gold">البذلات البريطانية الفاخرة</span>
+                        <span data-i18n="phil_title_1">نصمم الأنظمة الرقمية كما تُصنع</span> <br>
+                        <span data-i18n="phil_title_2" class="font-serif italic text-gold">البذلات البريطانية الفاخرة</span>
                     </h2>
-                    <p class="text-neutral-400 font-light leading-relaxed mb-8 text-base">
+                    <p data-i18n="phil_desc" class="text-neutral-400 font-light leading-relaxed mb-8 text-base">
                         كل بكسل نضعه يمر بمراحل من التقييم والضبط والملاءمة، تماماً كالتفصيل اليدوي في لندن. نحن لا نؤمن بالقوالب الجاهزة؛ بل نبتكر لكل هوية تفاصيلها الخاصة التي تمنحها الحضور الطاغي والقيمة الاستثنائية.
                     </p>
                     
                     <div class="grid grid-cols-2 gap-6 pt-6 border-t border-neutral-800">
                         <div>
-                            <p class="font-serif text-2xl text-gold font-light">100%</p>
-                            <p class="text-xs text-neutral-400 mt-1">تصاميم مخصصة بالكامل</p>
+                            <p data-i18n="phil_stat_1_val" class="font-serif text-2xl text-gold font-light">١٠٠٪</p>
+                            <p data-i18n="phil_stat_1_lbl" class="text-xs text-neutral-400 mt-1">هندسة مخصصة بالكامل</p>
                         </div>
                         <div>
-                            <p class="font-serif text-2xl text-gold font-light">0.1s</p>
-                            <p class="text-xs text-neutral-400 mt-1">استجابة فائقة السرعة</p>
+                            <p data-i18n="phil_stat_2_val" class="font-serif text-2xl text-gold font-light">٠.١ ث</p>
+                            <p data-i18n="phil_stat_2_lbl" class="text-xs text-neutral-400 mt-1">استجابة فائقة السرعة</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Graphic/Visual representation of precision -->
                 <div class="lg:col-span-5 flex justify-center">
-                    <div class="relative w-full max-w-[360px] aspect-[4/5] border border-neutral-800 p-4 flex flex-col justify-between bg-neutral-950/40 backdrop-blur-sm">
+                    <div class="relative w-full max-w-[360px] aspect-[4/5] border border-neutral-800 p-6 flex flex-col justify-between bg-neutral-950/40 backdrop-blur-sm">
                         <!-- Corner Accents -->
                         <div class="absolute top-0 right-0 w-4 h-[1px] bg-gold"></div>
                         <div class="absolute top-0 right-0 h-4 w-[1px] bg-gold"></div>
@@ -246,14 +261,14 @@
                         <div class="absolute bottom-0 left-0 h-4 w-[1px] bg-gold"></div>
 
                         <div class="flex justify-between items-start">
-                            <span class="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">System: Pearl v1.0</span>
-                            <span class="text-[10px] font-mono text-gold">ACTIVE</span>
+                            <span data-i18n="phil_box_sub" class="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">النظام: بيرل الإصدار الثاني</span>
+                            <span data-i18n="phil_box_status" class="text-[10px] font-mono text-gold">نشط</span>
                         </div>
 
                         <!-- Abstract tailoring grid lines -->
                         <div class="my-auto space-y-4 py-8">
                             <div class="flex items-center justify-between text-xs text-neutral-400">
-                                <span>خطوط التصميم المتناسقة</span>
+                                <span data-i18n="phil_box_row_1">التناسق البصري الهندسي</span>
                                 <span class="font-mono text-[10px] text-neutral-600">98.4%</span>
                             </div>
                             <div class="h-[2px] w-full bg-neutral-800 relative overflow-hidden">
@@ -261,7 +276,7 @@
                             </div>
                             
                             <div class="flex items-center justify-between text-xs text-neutral-400">
-                                <span>التناغم اللوني والضوء</span>
+                                <span data-i18n="phil_box_row_2">التناغم اللوني والضوء</span>
                                 <span class="font-mono text-[10px] text-neutral-600">99.1%</span>
                             </div>
                             <div class="h-[2px] w-full bg-neutral-800 relative overflow-hidden">
@@ -269,7 +284,7 @@
                             </div>
 
                             <div class="flex items-center justify-between text-xs text-neutral-400">
-                                <span>زوايا الانحناء والتناسق</span>
+                                <span data-i18n="phil_box_row_3">التكامل الهيكلي للأداء</span>
                                 <span class="font-mono text-[10px] text-neutral-600">100%</span>
                             </div>
                             <div class="h-[2px] w-full bg-neutral-800 relative overflow-hidden">
@@ -277,8 +292,8 @@
                             </div>
                         </div>
 
-                        <div class="text-[11px] text-neutral-500 text-center border-t border-neutral-900 pt-4">
-                            تمت هندسته بحرفية مطلقة
+                        <div data-i18n="phil_box_footer" class="text-[11px] text-neutral-500 text-center border-t border-neutral-900 pt-4">
+                            تمت الهندسة بحرفية مطلقة
                         </div>
                     </div>
                 </div>
@@ -288,11 +303,11 @@
     </section>
 
     <!-- Detailed Ecosystem Directory -->
-    <section class="py-20 lg:py-28">
+    <section class="py-20 lg:py-24">
         <div class="max-w-5xl mx-auto px-6 sm:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-2xl sm:text-3xl font-light text-pearl-900 mb-4">دليل الوصول السريع</h2>
-                <p class="text-sm text-neutral-400 max-w-md mx-auto">روابط مباشرة ومؤمنة لكافة منصات وتطبيقات بيئة عمل بيرل الفاخرة.</p>
+                <h2 data-i18n="dir_title" class="text-2xl sm:text-3xl font-light text-pearl-900 mb-4">دليل الوصول المباشر</h2>
+                <p data-i18n="dir_desc" class="text-sm text-neutral-400 max-w-md mx-auto">روابط مؤمنة ومباشرة للوصول السريع إلى منصات بيئة عمل بيرل.</p>
             </div>
 
             <div class="border-t border-b border-pearl-200/60 divide-y divide-pearl-100">
@@ -300,36 +315,24 @@
                 <!-- Link Row 1 -->
                 <div class="py-6 sm:py-8 flex flex-col sm:flex-row sm:items-center justify-between group">
                     <div class="mb-4 sm:mb-0">
-                        <span class="text-xs font-mono text-gold tracking-wider block mb-1">01 / PLATFORM</span>
-                        <h4 class="text-lg font-medium text-pearl-800 group-hover:text-gold transition-colors">مدونة بيرل الإستراتيجية</h4>
+                        <span data-i18n="dir_row_1_sub" class="text-xs font-mono text-gold tracking-wider block mb-1">٠١ / الفكر</span>
+                        <h4 data-i18n="dir_row_1_title" class="text-lg font-medium text-pearl-800 group-hover:text-gold transition-colors">منصة المدونة الإستراتيجية</h4>
                     </div>
                     <div class="flex items-center space-x-6 space-x-reverse">
                         <span class="text-xs text-neutral-400 font-mono hidden md:inline">https://blog.ly.id.ly</span>
-                        <a href="https://blog.ly.id.ly" target="_blank" rel="noopener noreferrer" class="px-5 py-2 border border-pearl-200 hover:border-pearl-800 text-xs font-semibold text-pearl-800 transition-all duration-300">زيارة الرابط</a>
+                        <a href="https://blog.ly.id.ly" target="_blank" rel="noopener noreferrer" data-i18n="dir_row_1_btn" class="px-5 py-2 border border-pearl-200 hover:border-pearl-800 text-xs font-semibold text-pearl-800 transition-all duration-300">زيارة الرابط</a>
                     </div>
                 </div>
 
                 <!-- Link Row 2 -->
                 <div class="py-6 sm:py-8 flex flex-col sm:flex-row sm:items-center justify-between group">
                     <div class="mb-4 sm:mb-0">
-                        <span class="text-xs font-mono text-gold tracking-wider block mb-1">02 / APPLICATION</span>
-                        <h4 class="text-lg font-medium text-pearl-800 group-hover:text-gold transition-colors">واجهة التطبيق الخارق الذكي</h4>
+                        <span data-i18n="dir_row_2_sub" class="text-xs font-mono text-gold tracking-wider block mb-1">٠٢ / المحرك</span>
+                        <h4 data-i18n="dir_row_2_title" class="text-lg font-medium text-pearl-800 group-hover:text-gold transition-colors">بوابة التطبيق الخارق للنخبة</h4>
                     </div>
                     <div class="flex items-center space-x-6 space-x-reverse">
                         <span class="text-xs text-neutral-400 font-mono hidden md:inline">https://app.ly.id.ly</span>
-                        <a href="https://app.ly.id.ly" target="_blank" rel="noopener noreferrer" class="px-5 py-2 border border-pearl-200 hover:border-pearl-800 text-xs font-semibold text-pearl-800 transition-all duration-300">زيارة الرابط</a>
-                    </div>
-                </div>
-
-                <!-- Link Row 3 -->
-                <div class="py-6 sm:py-8 flex flex-col sm:flex-row sm:items-center justify-between group">
-                    <div class="mb-4 sm:mb-0">
-                        <span class="text-xs font-mono text-gold tracking-wider block mb-1">03 / SHOWCASE</span>
-                        <h4 class="text-lg font-medium text-pearl-800 group-hover:text-gold transition-colors">لوحة التحكم وقوالب العرض</h4>
-                    </div>
-                    <div class="flex items-center space-x-6 space-x-reverse">
-                        <span class="text-xs text-neutral-400 font-mono hidden md:inline">https://admin.ly.id.ly</span>
-                        <a href="https://admin.ly.id.ly" target="_blank" rel="noopener noreferrer" class="px-5 py-2 border border-pearl-200 hover:border-pearl-800 text-xs font-semibold text-pearl-800 transition-all duration-300">زيارة الرابط</a>
+                        <a href="https://app.ly.id.ly" target="_blank" rel="noopener noreferrer" data-i18n="dir_row_2_btn" class="px-5 py-2 border border-pearl-200 hover:border-pearl-800 text-xs font-semibold text-pearl-800 transition-all duration-300">زيارة الرابط</a>
                     </div>
                 </div>
 
@@ -345,27 +348,26 @@
                 <!-- Col 1: Brand -->
                 <div class="md:col-span-2">
                     <span class="font-serif text-xl tracking-[0.2em] text-pearl-800 block mb-4">PEARL</span>
-                    <p class="text-sm text-neutral-400 max-w-sm leading-relaxed">
-                        منظومة رقمية مخصصة ومصممة بأعلى معايير الدقة والجمال لتلائم تطلعات الأعمال الفاخرة والنخبة الرقمية.
+                    <p data-i18n="footer_desc" class="text-sm text-neutral-400 max-w-sm leading-relaxed">
+                        منظومة رقمية مخصصة ومصممة بأعلى معايير الدقة والجمال لتلائم تطلعات الأعمال الفاخرة والنخبة الرقمية العالمية.
                     </p>
                 </div>
 
                 <!-- Col 2: Navigation -->
                 <div>
-                    <h5 class="text-xs font-bold tracking-widest text-pearl-800 uppercase mb-4">المنظومة</h5>
+                    <h5 data-i18n="footer_nav_title" class="text-xs font-bold tracking-widest text-pearl-800 uppercase mb-4">المنظومة</h5>
                     <ul class="space-y-2 text-sm text-neutral-500">
-                        <li><a href="https://blog.ly.id.ly" target="_blank" rel="noopener noreferrer" class="hover:text-gold transition-colors">المدونة الإستراتيجية</a></li>
-                        <li><a href="https://app.ly.id.ly" target="_blank" rel="noopener noreferrer" class="hover:text-gold transition-colors">التطبيق الخارق</a></li>
-                        <li><a href="https://admin.ly.id.ly" target="_blank" rel="noopener noreferrer" class="hover:text-gold transition-colors">لوحة التحكم والنماذج</a></li>
+                        <li><a href="https://blog.ly.id.ly" target="_blank" rel="noopener noreferrer" data-i18n="nav_blog" class="hover:text-gold transition-colors">المدونة الإستراتيجية</a></li>
+                        <li><a href="https://app.ly.id.ly" target="_blank" rel="noopener noreferrer" data-i18n="nav_app" class="hover:text-gold transition-colors">التطبيق الخارق</a></li>
                     </ul>
                 </div>
 
                 <!-- Col 3: Technical Details -->
                 <div>
-                    <h5 class="text-xs font-bold tracking-widest text-pearl-800 uppercase mb-4">التفاصيل الفنية</h5>
-                    <p class="text-xs text-neutral-400 leading-relaxed">
-                        الخادم الرئيسي: <span class="font-mono">pearl1.ly.id.ly</span><br>
-                        الترخيص: بروتوكول حماية وبث مخصص<br>
+                    <h5 data-i18n="footer_tech_title" class="text-xs font-bold tracking-widest text-pearl-800 uppercase mb-4">المواصفات الفنية</h5>
+                    <p data-i18n="footer_tech_desc" class="text-xs text-neutral-400 leading-relaxed whitespace-pre-line">
+                        الخادم الرئيسي: pearl1.ly.id.ly
+                        الترخيص: بروتوكول حماية سيادي مخصص
                         التصميم: فلسفة بيرل البريطانية
                     </p>
                 </div>
@@ -374,15 +376,181 @@
 
             <!-- Bottom Line -->
             <div class="border-t border-pearl-100 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-400">
-                <p>&copy; 2024 منظومة PEARL. جميع الحقوق محفوظة.</p>
+                <p data-i18n="footer_copy">&copy; ٢٠٢٥ منظومة PEARL. جميع الحقوق محفوظة.</p>
                 <div class="flex space-x-6 space-x-reverse mt-4 sm:mt-0">
-                    <a href="#" class="hover:text-gold transition-colors">سياسة الخصوصية</a>
+                    <a href="#" data-i18n="footer_privacy" class="hover:text-gold transition-colors">سياسة الخصوصية</a>
                     <span class="text-neutral-300">|</span>
-                    <a href="#" class="hover:text-gold transition-colors">شروط الاستخدام الفاخر</a>
+                    <a href="#" data-i18n="footer_terms" class="hover:text-gold transition-colors">شروط الاستخدام الفاخر</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Premium Custom WhatsApp Floating Widget -->
+    <div class="fixed bottom-6 end-6 z-50 animate-float">
+        <a href="https://wa.me/218944119965" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-3 space-x-reverse bg-pearl-900 text-pearl-50 hover:bg-gold-dark hover:text-pearl-900 px-5 py-3.5 rounded-full shadow-2xl border border-gold/30 transition-all duration-300 group">
+            <span data-i18n="whatsapp_label" class="text-xs font-semibold tracking-wider uppercase">الكونسيرج الرقمي</span>
+            <span class="w-px h-4 bg-neutral-700 group-hover:bg-pearl-900/30"></span>
+            <svg class="w-5 h-5 text-gold group-hover:text-pearl-900 transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.528 2.024 14.069.993 11.48.993c-5.44 0-9.866 4.369-9.87 9.799-.001 1.802.49 3.55 1.422 5.115l-1.012 3.693 3.793-.984zM16.51 13.91c-.266-.134-1.577-.773-1.821-.861-.244-.09-.422-.134-.599.134-.177.267-.688.862-.843 1.039-.155.178-.31.196-.577.062-.266-.134-1.124-.411-2.141-1.312-.791-.701-1.325-1.568-1.48-1.835-.155-.267-.017-.411.117-.544.12-.12.266-.31.4-.466.133-.155.177-.267.266-.445.089-.178.044-.334-.022-.467-.066-.133-.599-1.432-.821-1.965-.216-.517-.433-.446-.599-.454-.155-.007-.333-.008-.511-.008-.178 0-.466.067-.71.334-.244.267-.932.907-.932 2.21 0 1.303.954 2.56 1.087 2.738.133.178 1.879 2.852 4.55 3.996.635.272 1.13.435 1.517.557.639.202 1.22.174 1.68.106.512-.074 1.576-.641 1.798-1.258.222-.617.222-1.146.155-1.258-.066-.111-.244-.178-.511-.312z"/>
+            </svg>
+        </a>
+    </div>
+
+    <!-- Reactive Dual-Language Script -->
+    <script>
+        const translations = {
+            en: {
+                brand_sub: "Ecosystem",
+                nav_blog: "Strategic Blog",
+                nav_app: "Super-App",
+                cta_enter: "Enter Platform",
+                badge: "The Philosophy of Digital Tailoring",
+                hero_title_1: "Bespoke Digital Artistry",
+                hero_title_2: "Crafted for the Elite",
+                hero_title_3: "and inspiring the future",
+                hero_desc: "Engineering premium digital ecosystems inspired by the absolute precision of Savile Row tailoring and the timeless purity of natural pearls. A bespoke experience designed to transcend expectations.",
+                btn_launch_app: "Launch Super-App",
+                btn_read_blog: "Read Strategic Blog",
+                pillars_badge: "Ecosystem Pillars",
+                pillars_title: "The Dual Gateways of Pearl",
+                card_1_num: "01",
+                card_1_title: "The Strategic Blog",
+                card_1_desc: "Advanced essays and deep insights into luxury digital design, high-end user experience, and technological evolution.",
+                card_1_btn: "Visit Blog",
+                card_2_num: "02",
+                card_2_title: "The Super-App Interface",
+                card_2_desc: "A unified gateway for state-of-the-art digital asset management, secure analytics, and bespoke operational tools.",
+                card_2_btn: "Launch App",
+                phil_badge: "Digital Tailoring Philosophy",
+                phil_title_1: "We engineer digital systems like",
+                phil_title_2: "Bespoke Savile Row Suits",
+                phil_desc: "Every pixel is measured, refined, and hand-fitted. We do not believe in off-the-shelf templates. We craft exclusive digital identities that command presence and deliver unmatched prestige.",
+                phil_stat_1_val: "100%",
+                phil_stat_1_lbl: "Bespoke Architecture",
+                phil_stat_2_val: "0.1s",
+                phil_stat_2_lbl: "Ultra-low Latency",
+                phil_box_sub: "System: Pearl v2.0",
+                phil_box_status: "ACTIVE",
+                phil_box_row_1: "Aesthetic Symmetry",
+                phil_box_row_2: "Chromatic Harmony",
+                phil_box_row_3: "Structural Integrity",
+                phil_box_footer: "Engineered with absolute devotion",
+                dir_title: "Direct Access Directory",
+                dir_desc: "Secure, direct gateways to the active branches of the Pearl ecosystem.",
+                dir_row_1_sub: "01 / INTELLECT",
+                dir_row_1_title: "The Strategic Blog Platform",
+                dir_row_1_btn: "Access Link",
+                dir_row_2_sub: "02 / ENGINE",
+                dir_row_2_title: "The Elite Super-App Portal",
+                dir_row_2_btn: "Access Link",
+                footer_desc: "A bespoke digital ecosystem engineered to the absolute highest standards of precision, aesthetics, and performance for the global elite.",
+                footer_nav_title: "Ecosystem",
+                footer_tech_title: "Technical Specifications",
+                footer_tech_desc: "Main Node: pearl1.ly.id.ly\nLicense: Sovereign Cryptographic Protocol\nDesign: Savile Row Digital",
+                footer_copy: "© 2025 PEARL Ecosystem. All Rights Reserved.",
+                footer_privacy: "Privacy Policy",
+                footer_terms: "Terms of Luxury Service",
+                whatsapp_label: "Bespoke Concierge"
+            },
+            ar: {
+                brand_sub: "المنظومة الرقمية",
+                nav_blog: "المدونة الإستراتيجية",
+                nav_app: "التطبيق الخارق",
+                cta_enter: "دخول المنصة",
+                badge: "فلسفة التصميم الرقمي الفاخر",
+                hero_title_1: "صياغة رقمية فاخرة",
+                hero_title_2: "تليق بالنخبة",
+                hero_title_3: "وتلهم المستقبل",
+                hero_desc: "هندسة واجهات رقمية مستوحاة من دقة الخياطة البريطانية الراقية في شارع Savile Row وبساطة اللؤلؤ الطبيعي الخالد. تجربة فريدة مصممة لتتجاوز التوقعات.",
+                btn_launch_app: "تشغيل التطبيق الخارق",
+                btn_read_blog: "تصفح المدونة الإستراتيجية",
+                pillars_badge: "ركائز المنظومة",
+                pillars_title: "البوابتان الثنائيتان لبيئة بيرل",
+                card_1_num: "٠١",
+                card_1_title: "المدونة الإستراتيجية",
+                card_1_desc: "أبحاث ومقالات متقدمة حول فلسفة التصميم الفاخر وتطور هندسة تجارب المستخدم الاستثنائية.",
+                card_1_btn: "زيارة المدونة",
+                card_2_num: "٠٢",
+                card_2_title: "التطبيق الخارق الذكي",
+                card_2_desc: "بوابة موحدة لإدارة الأصول الرقمية والتحليلات المتقدمة والعمليات السيادية بواجهة فائقة الأداء.",
+                card_2_btn: "تشغيل التطبيق",
+                phil_badge: "فلسفة التفصيل الرقمي",
+                phil_title_1: "نصمم الأنظمة الرقمية كما تُصنع",
+                phil_title_2: "البذلات البريطانية الفاخرة",
+                phil_desc: "كل بكسل نضعه يمر بمراحل من التقييم والضبط والملاءمة، تماماً كالتفصيل اليدوي في لندن. نحن لا نؤمن بالقوالب الجاهزة؛ بل نبتكر لكل هوية تفاصيلها الخاصة التي تمنحها الحضور الطاغي والقيمة الاستثنائية.",
+                phil_stat_1_val: "١٠٠٪",
+                phil_stat_1_lbl: "هندسة مخصصة بالكامل",
+                phil_stat_2_val: "٠.١ ث",
+                phil_stat_2_lbl: "استجابة فائقة السرعة",
+                phil_box_sub: "النظام: بيرل الإصدار الثاني",
+                phil_box_status: "نشط",
+                phil_box_row_1: "التناسق البصري الهندسي",
+                phil_box_row_2: "التناغم اللوني والضوء",
+                phil_box_row_3: "التكامل الهيكلي للأداء",
+                phil_box_footer: "تمت الهندسة بحرفية مطلقة",
+                dir_title: "دليل الوصول المباشر",
+                dir_desc: "روابط مؤمنة ومباشرة للوصول السريع إلى منصات بيئة عمل بيرل.",
+                dir_row_1_sub: "٠١ / الفكر",
+                dir_row_1_title: "منصة المدونة الإستراتيجية",
+                dir_row_1_btn: "زيارة الرابط",
+                dir_row_2_sub: "٠٢ / المحرك",
+                dir_row_2_title: "بوابة التطبيق الخارق للنخبة",
+                dir_row_2_btn: "زيارة الرابط",
+                footer_desc: "منظومة رقمية مخصصة ومصممة بأعلى معايير الدقة والجمال لتلائم تطلعات الأعمال الفاخرة والنخبة الرقمية العالمية.",
+                footer_nav_title: "المنظومة",
+                footer_tech_title: "المواصفات الفنية",
+                footer_tech_desc: "الخادم الرئيسي: pearl1.ly.id.ly\nالترخيص: بروتوكول حماية سيادي مخصص\nالتصميم: فلسفة بيرل البريطانية",
+                footer_copy: "© ٢٠٢٥ منظومة PEARL. جميع الحقوق محفوظة.",
+                footer_privacy: "سياسة الخصوصية",
+                footer_terms: "شروط الاستخدام الفاخر",
+                whatsapp_label: "الكونسيرج الرقمي"
+            }
+        };
+
+        let currentLang = 'ar';
+
+        function updateUI() {
+            // Set Document properties
+            const htmlTag = document.documentElement;
+            htmlTag.setAttribute('lang', currentLang);
+            htmlTag.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+
+            // Toggle active classes on language labels
+            const arLabel = document.getElementById('lang-ar-label');
+            const enLabel = document.getElementById('lang-en-label');
+
+            if (currentLang === 'ar') {
+                arLabel.className = 'border-b-2 border-gold text-pearl-900 pb-0.5 font-bold';
+                enLabel.className = 'text-neutral-400 pb-0.5';
+                document.title = "PEARL | المنظومة الرقمية الفاخرة";
+            } else {
+                enLabel.className = 'border-b-2 border-gold text-pearl-900 pb-0.5 font-bold';
+                arLabel.className = 'text-neutral-400 pb-0.5';
+                document.title = "PEARL | Premium Digital Ecosystem";
+            }
+
+            // Translate all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    // Check if it's an anchor or paragraph to preserve formatting
+                    if (key === 'footer_tech_desc') {
+                        element.innerText = translations[currentLang][key];
+                    } else {
+                        element.innerHTML = translations[currentLang][key];
+                    }
+                }
+            });
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            updateUI();
+        }
+
+        // Run UI update on initialization to set initial state
+        updateUI();
+    </script>
 </body>
 </html>
